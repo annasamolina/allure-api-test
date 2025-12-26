@@ -26,10 +26,18 @@ jobs:
         run: |
           python -m pytest --alluredir=./allure-results
 
+      - name: Install Allure CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jre-headless
+          wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.26.0/allure-commandline-2.26.0.zip
+          unzip allure-commandline-2.26.0.zip -d allure
+          echo "ALLURE_HOME=$(pwd)/allure/allure-2.26.0/bin" >> $GITHUB_ENV
+          echo "$(pwd)/allure/allure-2.26.0/bin" >> $GITHUB_PATH
+
       - name: Generate Allure report
         run: |
-          pip install allure-commandline
-          allure generate ./allure-results -o ./allure-report --clean
+          $ALLURE_HOME/allure generate ./allure-results -o ./allure-report --clean
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
