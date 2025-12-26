@@ -26,10 +26,10 @@ jobs:
         run: |
           python -m pytest --alluredir=./allure-results
 
-      - name: Generate Allure report
-        uses: simple-elf/allure-report-action@v1.2.0
-        with:
-          allure_results: ./allure-results
+       - name: Generate Allure report
+        run: |
+          pip install allure-commandline
+          allure generate ./allure-results -o ./allure-report --clean
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
